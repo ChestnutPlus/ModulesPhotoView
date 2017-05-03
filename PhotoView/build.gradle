@@ -32,5 +32,5 @@ dependencies {
     //  https://github.com/bm-x/PhotoView
     compile 'com.bm.photoview:library:1.4.1'
     //注意，集成到项目后，需要注意一下Common包是否重复引入
-    compile 'com.github.ChestnutPlus:ModulesCommon:1.0.1'
+    compile 'com.github.ChestnutPlus:ModulesCommon:1.0.2'
 }
