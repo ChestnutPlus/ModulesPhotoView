@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:clipToPadding="true"
     android:fitsSystemWindows="true"
-    android:background="#000">
+    android:background="#3a393e">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"
@@ -20,8 +20,8 @@
         android:paddingTop="10dp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:layout_width="52dp"
-        android:layout_height="52dp" />
+        android:layout_width="50dp"
+        android:layout_height="50dp" />
 
     <TextView
         android:padding="10dp"
@@ -46,8 +46,8 @@
     <ImageView
         android:id="@+id/imgDownload"
         android:background="@drawable/bg_transparent_to_gray"
-        android:layout_width="52dp"
-        android:layout_height="52dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:padding="15dp"
