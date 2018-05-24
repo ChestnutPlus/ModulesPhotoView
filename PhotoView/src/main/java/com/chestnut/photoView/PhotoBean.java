@@ -1,4 +1,4 @@
-package com.chestnut.PhotoView;
+package com.chestnut.photoView;
 
 import android.graphics.Bitmap;
 import android.os.Parcel;

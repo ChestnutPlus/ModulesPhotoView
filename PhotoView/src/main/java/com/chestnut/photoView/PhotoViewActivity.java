@@ -1,4 +1,4 @@
-package com.chestnut.PhotoView;
+package com.chestnut.photoView;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

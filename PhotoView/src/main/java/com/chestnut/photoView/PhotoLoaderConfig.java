@@ -1,4 +1,4 @@
-package com.chestnut.PhotoView;
+package com.chestnut.photoView;
 
 /**
  * Created by Chestnut on 2017/3/11.

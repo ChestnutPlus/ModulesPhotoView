@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.chestnut.PhotoView.PhotoBean;
-import com.chestnut.PhotoView.PhotoViewActivity;
+import com.chestnut.photoView.PhotoBean;
+import com.chestnut.photoView.PhotoViewActivity;
 
 import java.util.ArrayList;
 

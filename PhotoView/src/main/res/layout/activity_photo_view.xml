@@ -13,9 +13,9 @@
         android:layout_height="match_parent"/>
 
     <ImageView
-        android:background="@drawable/bg_transparent_to_gray"
+        android:background="@drawable/chestnut_common_touch_round_bg"
         android:id="@+id/imgBack"
-        android:src="@drawable/white_arrow_left"
+        android:src="@drawable/chestnut_common_white_arrow_left"
         android:paddingBottom="10dp"
         android:paddingTop="10dp"
         android:paddingStart="16dp"
@@ -45,12 +45,12 @@
 
     <ImageView
         android:id="@+id/imgDownload"
-        android:background="@drawable/bg_transparent_to_gray"
+        android:background="@drawable/chestnut_common_touch_round_bg"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:padding="15dp"
-        android:src="@drawable/white_down_icon" />
+        android:src="@drawable/chestnut_common_white_close" />
 
 </RelativeLayout>

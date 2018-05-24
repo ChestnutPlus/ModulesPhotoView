@@ -1,4 +1,4 @@
-package com.chestnut.PhotoView;
+package com.chestnut.photoView;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -7,10 +7,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bm.library.PhotoView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.chestnut.photoView.core.PhotoView;
 
 import java.util.List;
 
@@ -60,7 +60,7 @@ public class PhotoViewPagerAdapter extends PagerAdapter {
                     .load(mListPhotoBeans.get(i).url)
                     .asBitmap()
                     .thumbnail(0.1f)
-                    .error(R.drawable.img_fail_load)
+                    .error(R.drawable.chestnut_photo_view_load_fail)
                     .listener(new RequestListener<String, Bitmap>() {
                         @Override
                         public boolean onException(Exception e, String s, Target<Bitmap> target, boolean b) {

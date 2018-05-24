@@ -2,19 +2,23 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.1"
+    buildToolsVersion "26.0.2"
 
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0.2"
+        versionCode 2
+        versionName "1.0.3"
         /**
          *  1.0.1
          *      正式版 ： 功能：图片缩放，查看，下载等等。
          *
          *  1.0.2   2017年3月26日00:07:30  栗子
          *      1. 转移到新的库。
+         *
+         *  1.0.3-2
+         *      1.  更新Common依赖
+         *      2.  对资源添加前缀
          *
          */
     }
@@ -24,13 +28,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    //在资源名称前加上前缀名，避免资源冲突
+    resourcePrefix 'chestnut_photo_view_'
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:25.1.1'
+    api 'com.android.support:appcompat-v7:25.4.0'
     //图片浏览库：
     //  https://github.com/bm-x/PhotoView
-    compile 'com.bm.photoview:library:1.4.1'
-    //注意，集成到项目后，需要注意一下Common包是否重复引入
-    compile 'com.github.ChestnutPlus:ModulesCommon:1.0.4'
+//    implementation 'com.bm.photoview:library:1.4.1'
+    api 'com.github.ChestnutPlus:ModulesCommon:2.1.2'
 }
