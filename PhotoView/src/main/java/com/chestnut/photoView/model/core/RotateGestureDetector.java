@@ -1,11 +1,11 @@
-package com.chestnut.photoView.core;
+package com.chestnut.photoView.model.core;
 
 import android.view.MotionEvent;
 
 /**
  * Created by q2366 on 2015/10/12.
  */
-public class RotateGestureDetector {
+class RotateGestureDetector {
 
     private static final int MAX_DEGREES_STEP = 120;
 

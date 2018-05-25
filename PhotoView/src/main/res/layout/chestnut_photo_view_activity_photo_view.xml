@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/tools"
     android:id="@+id/activity_photo_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,13 +9,13 @@
     android:background="#3a393e">
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/viewPager"
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
     <ImageView
+        android:id="@+id/img_back"
         android:background="@drawable/chestnut_common_touch_round_bg"
-        android:id="@+id/imgBack"
         android:src="@drawable/chestnut_common_white_arrow_left"
         android:paddingBottom="10dp"
         android:paddingTop="10dp"
@@ -25,8 +26,12 @@
 
     <TextView
         android:padding="10dp"
-        android:id="@+id/txtTitle"
-        android:layout_alignTop="@id/imgBack"
+        tool:text="萝莉"
+        android:maxLines="1"
+        android:maxWidth="200dp"
+        android:gravity="center"
+        android:id="@+id/tv_title"
+        android:layout_alignTop="@id/img_back"
         android:textColor="#fff"
         android:layout_centerHorizontal="true"
         android:textSize="20sp"
@@ -34,23 +39,22 @@
         android:layout_height="wrap_content" />
 
     <TextView
+        android:id="@+id/tv_pager_index"
         android:textColor="#fff"
         android:layout_margin="15dp"
         android:layout_alignParentBottom="true"
         android:textSize="20sp"
-        android:id="@+id/txtPagerIndex"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true" />
 
     <ImageView
-        android:id="@+id/imgDownload"
+        android:id="@+id/img_download"
         android:background="@drawable/chestnut_common_touch_round_bg"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:padding="15dp"
-        android:src="@drawable/chestnut_common_white_close" />
-
+        android:padding="12dp"
+        android:src="@drawable/chestnut_photo_view_white_down_icon" />
 </RelativeLayout>

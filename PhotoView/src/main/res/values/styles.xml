@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="PhotoLoaderAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="chestnut_photo_view_PhotoLoaderAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>

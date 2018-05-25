@@ -1,4 +1,4 @@
-package com.chestnut.photoView.core;
+package com.chestnut.photoView.model.core;
 
 import android.content.Context;
 import android.graphics.Canvas;

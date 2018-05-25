@@ -1,4 +1,4 @@
-package com.chestnut.photoView;
+package com.chestnut.photoView.view.pager;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -10,7 +10,9 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.chestnut.photoView.core.PhotoView;
+import com.chestnut.photoView.bean.PhotoBean;
+import com.chestnut.photoView.R;
+import com.chestnut.photoView.model.core.PhotoView;
 
 import java.util.List;
 
