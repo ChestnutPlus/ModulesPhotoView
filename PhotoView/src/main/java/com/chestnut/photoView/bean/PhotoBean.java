@@ -17,8 +17,6 @@ public class PhotoBean implements Parcelable {
     public String desc = null;          //图片的描述
 
     public Bitmap bitmap = null;    //Glide加载完成后，对应的Drawable
-    public boolean isSaveing = false;
-    public boolean isSaveed = false;
 
     public PhotoBean(String title, String url, String thumbPic, boolean isLocal, String desc) {
         this.title = title;
