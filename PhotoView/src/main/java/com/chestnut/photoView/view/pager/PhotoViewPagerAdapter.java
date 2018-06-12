@@ -1,18 +1,18 @@
 package com.chestnut.photoView.view.pager;
 
 import android.content.Context;
-import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.support.v4.view.PagerAdapter;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
-import com.chestnut.photoView.bean.PhotoBean;
+import com.chestnut.common.manager.imgloader.ImgLoaderConfig;
+import com.chestnut.common.manager.imgloader.ImgLoaderManager;
+import com.chestnut.common.manager.imgloader.contract.ImgLoaderListener;
 import com.chestnut.photoView.R;
+import com.chestnut.photoView.bean.PhotoBean;
 import com.chestnut.photoView.model.core.PhotoView;
+import com.chestnut.photoView.view.progress.CBProgressBar;
 
 import java.util.List;
 
@@ -23,7 +23,6 @@ import java.util.List;
 
 public class PhotoViewPagerAdapter extends PagerAdapter {
 
-    private String TAG = "PhotoViewPagerAdapter";
     private List<View> mListViews;
     private List<PhotoBean> mListPhotoBeans;
 
@@ -58,28 +57,30 @@ public class PhotoViewPagerAdapter extends PagerAdapter {
             final int index = i;
             PhotoView photoView = (PhotoView) mListViews.get(index).findViewById(R.id.photoView);
             photoView.enable();
-            Glide.with(context)
-                    .load(mListPhotoBeans.get(i).url)
-                    .asBitmap()
-                    .thumbnail(0.1f)
-                    .error(R.drawable.chestnut_photo_view_load_fail)
-                    .listener(new RequestListener<String, Bitmap>() {
+            ImgLoaderManager.getInstance().load(context, ImgLoaderConfig.builder()
+                    .from(mListPhotoBeans.get(i).url)
+                    .err(R.drawable.chestnut_photo_view_load_fail)
+                    .listen(new ImgLoaderListener() {
                         @Override
-                        public boolean onException(Exception e, String s, Target<Bitmap> target, boolean b) {
-                            Log.e(TAG,"onException:"+e.getMessage()+",s:"+s);
-                            mListViews.get(index).findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
-                            mListPhotoBeans.get(index).bitmap = null;
-                            return false;
+                        public void onReady(Drawable drawable) {
+                            mListViews.get(index).findViewById(R.id.loading).setVisibility(View.INVISIBLE);
                         }
 
                         @Override
-                        public boolean onResourceReady(Bitmap bitmap, String s, Target<Bitmap> target, boolean b, boolean b1) {
-                            mListViews.get(index).findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
-                            mListPhotoBeans.get(index).bitmap = bitmap;
-                            return false;
+                        public void onErr() {
+                            mListViews.get(index).findViewById(R.id.loading).setVisibility(View.INVISIBLE);
+                        }
+
+                        @Override
+                        public void onProgress(int progress) {
+                            CBProgressBar cbProgressBar = (CBProgressBar) mListViews.get(index).findViewById(R.id.loading);
+                            cbProgressBar.setVisibility(View.VISIBLE);
+                            cbProgressBar.setMax(100);
+                            cbProgressBar.setProgress(progress);
                         }
                     })
-                    .into(photoView);
+                    .to(photoView)
+                    .build());
         }
     }
 }

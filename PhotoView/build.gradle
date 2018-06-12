@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 2
-        versionName "1.0.3"
+        versionCode 3
+        versionName "1.0.4"
         /**
          *  1.0.1
          *      正式版 ： 功能：图片缩放，查看，下载等等。
@@ -20,7 +20,16 @@ android {
          *      1.  更新Common依赖
          *      2.  对资源添加前缀
          *
+         *  1.0.4-3
+         *      1.  更新Common依赖
+         *      2.  更改Glide为ImgLoaderManager
+         *      3.  增加加载图片进度的显示
          */
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [moduleName: project.getName()]
+            }
+        }
     }
     buildTypes {
         release {
@@ -37,9 +46,9 @@ android {
 }
 
 dependencies {
-    api 'com.android.support:appcompat-v7:25.4.0'
+    implementation 'com.android.support:appcompat-v7:25.4.0'
     //图片浏览库：
     //  https://github.com/bm-x/PhotoView
 //    implementation 'com.bm.photoview:library:1.4.1'
-    api 'com.github.ChestnutPlus:ModulesCommon:2.1.2'
+    implementation 'com.github.ChestnutPlus:ModulesCommon:2.1.8'
 }

@@ -69,8 +69,10 @@ public class PhotoViewPresenter implements PhotoViewContract.P{
     @Override
     public void onPageSelected(int position) {
         currentPosition = position;
-        if (v!=null && photoBeanArrayList!=null)
-            v.setPagerIndex(currentPosition+1, photoBeanArrayList.size());
+        if (v!=null && photoBeanArrayList!=null) {
+            v.setPagerIndex(currentPosition + 1, photoBeanArrayList.size());
+            v.setTvTitle(photoBeanArrayList.get(currentPosition).title);
+        }
     }
 
     @Override
