@@ -47,4 +47,4 @@ findViewById(R.id.button).setOnClickListener(view -> {
 
 # Show
 最后放一个图吧
-[简单看看就好了](./show/photo_show_1.gif)
+![](./show/photo_show_1.gif)
