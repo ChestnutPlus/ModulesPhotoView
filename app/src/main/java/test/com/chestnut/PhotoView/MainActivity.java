@@ -21,11 +21,12 @@ public class MainActivity extends AppCompatActivity {
             ArrayList<PhotoBean> photoBeanArrayList = new ArrayList<>();
             photoBeanArrayList.add(new PhotoBean("家庭教师","http://f.hiphotos.baidu.com/zhidao/pic/item/a8773912b31bb051355fbb27367adab44aede042.jpg"));
             photoBeanArrayList.add(new PhotoBean("家庭教师1212","http://img.kumi.cn/photo/f3/6b/43/f36b43bf558cb176.jpg"));
-            photoBeanArrayList.add(new PhotoBean("3","http://windowserl.honeybot.cn:8080/Images/yolkworld.png"));
+            photoBeanArrayList.add(new PhotoBean("","http://windowserl.honeybot.cn:8080/Images/yolkworld.png"));
             photoBeanArrayList.add(new PhotoBean("4","http://img.kumi.cn/photo/f6/d9/bf/f6d9bfef5cbe21b1.jpg"));
             photoBeanArrayList.add(new PhotoBean("家庭教师","fsdfsd"));
             photoBeanArrayList.add(new PhotoBean("萝莉1","http://5b0988e595225.cdn.sohucs.com/images/20171013/3ceaedb2e61f4de68aacc1d02986a587.jpeg"));
             photoBeanArrayList.add(new PhotoBean("萝莉2","http://img.hkwb.net/attachement/jpg/site2/20140901/4487fc912322156e5d3d3b.jpg"));
+
 
             PhotoConfig.getInstance()
                     .setOpenDownload(true)

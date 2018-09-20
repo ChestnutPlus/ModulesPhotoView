@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class PhotoViewActivity extends AppCompatActivity implements View.OnClickListener,PhotoViewContract.V {
 
     public static String Key_Photo_List = "Key_Photo_List";
-    private PhotoViewPresenter photoViewPresenter = new PhotoViewPresenter(this);
+    private PhotoViewPresenter photoViewPresenter = new PhotoViewPresenter(this,this);
     private TextView tvPagerIndex,tvTitle;
     private ViewPager viewPager;
     private ImageView imgDownload;

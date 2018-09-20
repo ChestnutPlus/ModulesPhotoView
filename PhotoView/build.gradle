@@ -50,5 +50,5 @@ dependencies {
     //图片浏览库：
     //  https://github.com/bm-x/PhotoView
 //    implementation 'com.bm.photoview:library:1.4.1'
-    api 'com.github.ChestnutPlus:ModulesCommon:2.1.8'
+    api 'com.github.ChestnutPlus:ModulesCommon:2.2.0'
 }
