@@ -25,11 +25,6 @@ android {
          *      2.  更改Glide为ImgLoaderManager
          *      3.  增加加载图片进度的显示
          */
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = [moduleName: project.getName()]
-            }
-        }
     }
     buildTypes {
         release {

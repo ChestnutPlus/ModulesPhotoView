@@ -3,7 +3,8 @@ package com.chestnut.photoView.contract;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
+import android.graphics.Typeface;
+import android.util.LongSparseArray;
 
 import com.chestnut.photoView.bean.PhotoBean;
 import com.chestnut.photoView.view.activity.PhotoViewActivity;
@@ -23,41 +24,115 @@ import java.util.ArrayList;
  */
 public class PhotoViewer {
 
-    private PhotoViewer(Builder builder){
+    public static String Key_Builder = "Key_Builder";
+
+    private LongSparseArray<Builder> builderLongSparseArray = new LongSparseArray<>();
+
+    /*单例*/
+    private static volatile PhotoViewer defaultInstance;
+    public static PhotoViewer getInstance() {
+        PhotoViewer xFontUtils = defaultInstance;
+        if (defaultInstance == null) {
+            synchronized (PhotoViewer.class) {
+                xFontUtils = defaultInstance;
+                if (defaultInstance == null) {
+                    xFontUtils = new PhotoViewer();
+                    defaultInstance = xFontUtils;
+                }
+            }
+        }
+        return xFontUtils;
+    }
+    private PhotoViewer(){}
+
+    /**
+     * 执行跳转
+     * @param builder builder
+     * @return this
+     */
+    private PhotoViewer execute(Builder builder){
+        long sparseKey = System.currentTimeMillis();
+        builderLongSparseArray.put(sparseKey,builder);
         Intent intent = new Intent(builder.context, PhotoViewActivity.class);
         if (!(builder.context instanceof Activity))
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList(PhotoViewActivity.Key_Photo_List,builder.photoBeanArrayList);
-        bundle.putParcelable("callback", builder.photoViewerCallback);
-        intent.putExtras(bundle);
-        context.startActivity(intent);
+        intent.putExtra(Key_Builder,sparseKey);
+        builder.context.startActivity(intent);
+        return this;
     }
 
+    /**
+     * 得到建造者
+     * @return 建造者
+     */
     public static Builder builder() {
         return new Builder();
     }
 
     /**
-     * 定义属性
+     * pop出 builder
+     * @param key key
+     * @return builder
+     */
+    public synchronized Builder pop(long key) {
+        return builderLongSparseArray.get(key,null);
+    }
+
+    public synchronized Builder popAndClean(long key) {
+        Builder builder = builderLongSparseArray.get(key,null);
+        builderLongSparseArray.clear();
+        return builder;
+    }
+
+    /**
+     * PhotoViewer
+     *  建造者
      */
     public static final class Builder {
 
-        private ArrayList<PhotoBean> photoBeanArrayList;
-        private PhotoViewerCallback photoViewerCallback;
+        public ArrayList<PhotoBean> photoBeanArrayList = new ArrayList<>();
+        public Callback photoViewerCallback;
+        public boolean enableDownload = false;
+        public Typeface typeface = null;
         private Context context;
 
         public PhotoViewer build(Context context) {
             this.context = context;
-            return new PhotoViewer(this);
+            return PhotoViewer.getInstance().execute(this);
         }
 
-        public void setPhotoBeanArrayList(ArrayList<PhotoBean> photoBeanArrayList) {
-            this.photoBeanArrayList = photoBeanArrayList;
+        public Builder setPhotoBeanArrayList(ArrayList<? extends PhotoBean> photoBeanArrayList) {
+            this.photoBeanArrayList.addAll(photoBeanArrayList);
+            return this;
         }
 
-        public void setPhotoViewerCallback(PhotoViewerCallback photoViewerCallback) {
+        public <T extends PhotoBean> Builder setPhotoBean(T t) {
+            this.photoBeanArrayList.add(t);
+            return this;
+        }
+
+        public Builder setPhotoViewerCallback(Callback photoViewerCallback) {
             this.photoViewerCallback = photoViewerCallback;
+            return this;
         }
+
+        public Builder setTypeface(Typeface typeface) {
+            this.typeface = typeface;
+            return this;
+        }
+
+        public Builder setEnableDownload(boolean enableDownload) {
+            this.enableDownload = enableDownload;
+            return this;
+        }
+    }
+
+    /**
+     * 回调
+     */
+    public static abstract class Callback {
+        public void onSaveStart(String saveSuccessFilePath){}
+        public void onSaveSuccess(String saveSuccessFilePath){}
+        public void onSaveFail(String saveSuccessFilePath){}
     }
 }

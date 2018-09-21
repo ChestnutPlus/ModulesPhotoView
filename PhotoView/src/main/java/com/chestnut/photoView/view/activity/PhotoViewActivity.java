@@ -1,6 +1,7 @@
 package com.chestnut.photoView.view.activity;
 
 import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -13,14 +14,14 @@ import android.widget.TextView;
 
 import com.chestnut.photoView.R;
 import com.chestnut.photoView.bean.PhotoBean;
+import com.chestnut.photoView.contract.PhotoViewContract;
 import com.chestnut.photoView.presenter.PhotoViewPresenter;
 import com.chestnut.photoView.view.pager.PhotoViewPagerAdapter;
 
 import java.util.ArrayList;
 
-public class PhotoViewActivity extends AppCompatActivity implements View.OnClickListener,PhotoViewContract.V {
+public class PhotoViewActivity extends AppCompatActivity implements View.OnClickListener,PhotoViewContract.V,ViewPager.OnPageChangeListener {
 
-    public static String Key_Photo_List = "Key_Photo_List";
     private PhotoViewPresenter photoViewPresenter = new PhotoViewPresenter(this,this);
     private TextView tvPagerIndex,tvTitle;
     private ViewPager viewPager;
@@ -41,29 +42,15 @@ public class PhotoViewActivity extends AppCompatActivity implements View.OnClick
         //init presenter
         photoViewPresenter.onCreate(getIntent());
         //set listener
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                photoViewPresenter.onPageSelected(position);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
         findViewById(R.id.img_back).setOnClickListener(this);
+        viewPager.addOnPageChangeListener(this);
         imgDownload.setOnClickListener(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        viewPager.removeOnPageChangeListener(this);
         photoViewPresenter.onDestroy();
     }
 
@@ -119,5 +106,28 @@ public class PhotoViewActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void showDownloadIcon(boolean isShow) {
         runOnUiThread(()-> imgDownload.setVisibility(isShow?View.VISIBLE:View.INVISIBLE));
+    }
+
+    @Override
+    public void setTypeface(Typeface typeface) {
+        if (typeface!=null && tvPagerIndex!=null && tvTitle!=null) {
+            tvPagerIndex.setTypeface(typeface);
+            tvTitle.setTypeface(typeface);
+        }
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        photoViewPresenter.onPageSelected(position);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 }

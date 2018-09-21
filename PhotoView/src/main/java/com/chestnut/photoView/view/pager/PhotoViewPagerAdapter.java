@@ -11,7 +11,7 @@ import com.chestnut.common.manager.imgloader.ImgLoaderManager;
 import com.chestnut.common.manager.imgloader.contract.ImgLoaderListener;
 import com.chestnut.photoView.R;
 import com.chestnut.photoView.bean.PhotoBean;
-import com.chestnut.photoView.model.core.PhotoView;
+import com.chestnut.photoView.view.core.PhotoView;
 import com.chestnut.photoView.view.progress.CBProgressBar;
 
 import java.util.List;

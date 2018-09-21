@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tool="http://schemas.android.com/tools"
     android:id="@+id/activity_photo_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipToPadding="true"
-    android:fitsSystemWindows="true"
-    android:background="#3a393e">
+    android:fitsSystemWindows="true">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager"
@@ -29,6 +28,7 @@
         tool:text="萝莉"
         android:maxLines="1"
         android:maxWidth="200dp"
+        android:layout_gravity="center_horizontal"
         android:gravity="center"
         android:id="@+id/tv_title"
         android:layout_alignTop="@id/img_back"
@@ -41,6 +41,7 @@
     <TextView
         android:id="@+id/tv_pager_index"
         android:textColor="#fff"
+        android:layout_gravity="bottom"
         android:layout_margin="15dp"
         android:layout_alignParentBottom="true"
         android:textSize="20sp"
@@ -50,6 +51,7 @@
 
     <ImageView
         android:id="@+id/img_download"
+        android:layout_gravity="bottom|end"
         android:background="@drawable/chestnut_common_touch_round_bg"
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -57,4 +59,4 @@
         android:layout_alignParentEnd="true"
         android:padding="12dp"
         android:src="@drawable/chestnut_photo_view_white_down_icon" />
-</RelativeLayout>
+</merge>

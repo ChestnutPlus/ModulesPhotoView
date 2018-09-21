@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:CBProgressBar="http://schemas.android.com/apk/res-auto"
-    android:background="#000"
+    android:background="#3a393e"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.chestnut.photoView.model.core.PhotoView
+    <com.chestnut.photoView.view.core.PhotoView
         android:id="@+id/photoView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,8 +16,7 @@
         android:id="@+id/loading"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="center"
         CBProgressBar:chestnut_photo_view_orientation="sector"
-        CBProgressBar:chestnut_photo_view_sectorColor="#fafafa"
-        android:layout_centerInParent="true"/>
-</RelativeLayout>
+        CBProgressBar:chestnut_photo_view_sectorColor="#fafafa"/>
+</FrameLayout>
