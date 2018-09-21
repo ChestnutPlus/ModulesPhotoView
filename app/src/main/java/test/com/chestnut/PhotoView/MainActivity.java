@@ -7,6 +7,7 @@ import android.widget.Toast;
 import com.chestnut.common.manager.imgloader.ImgLoaderManager;
 import com.chestnut.photoView.bean.PhotoBean;
 import com.chestnut.photoView.contract.PhotoConfig;
+import com.chestnut.photoView.contract.PhotoViewer;
 
 import java.util.ArrayList;
 
@@ -27,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
             photoBeanArrayList.add(new PhotoBean("萝莉1","http://5b0988e595225.cdn.sohucs.com/images/20171013/3ceaedb2e61f4de68aacc1d02986a587.jpeg"));
             photoBeanArrayList.add(new PhotoBean("萝莉2","http://img.hkwb.net/attachement/jpg/site2/20140901/4487fc912322156e5d3d3b.jpg"));
 
+            PhotoViewer.builder()
+                    .build();
 
             PhotoConfig.getInstance()
                     .setOpenDownload(true)
@@ -54,5 +57,8 @@ public class MainActivity extends AppCompatActivity {
                     })
                     .toViewPhoto(MainActivity.this.getApplicationContext(), photoBeanArrayList);
         });
+
+
+
     }
 }

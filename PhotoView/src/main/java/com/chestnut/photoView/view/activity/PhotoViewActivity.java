@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.chestnut.photoView.R;
 import com.chestnut.photoView.bean.PhotoBean;
-import com.chestnut.photoView.contract.PhotoViewContract;
 import com.chestnut.photoView.presenter.PhotoViewPresenter;
 import com.chestnut.photoView.view.pager.PhotoViewPagerAdapter;
 

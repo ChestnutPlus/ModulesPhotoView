@@ -11,7 +11,6 @@ import com.chestnut.common.utils.SimpleDownloadUtils;
 import com.chestnut.common.utils.StringUtils;
 import com.chestnut.photoView.bean.PhotoBean;
 import com.chestnut.photoView.contract.PhotoConfig;
-import com.chestnut.photoView.contract.PhotoViewContract;
 
 import java.io.File;
 import java.util.ArrayList;
