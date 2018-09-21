@@ -5,7 +5,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -91,15 +90,9 @@ public class PhotoViewActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void refreshViewPager(ArrayList<PhotoBean> photoBeanArrayList) {
         runOnUiThread(()->{
-            LayoutInflater inflater = getLayoutInflater();
-            ArrayList<View> views = new ArrayList<>();
-            for (int i = 0; i < photoBeanArrayList.size(); i++) {
-                views.add(inflater.inflate(R.layout.chestnut_photo_view_pager_photo_view, null));
-            }
-            PhotoViewPagerAdapter photoViewPagerAdapter = new PhotoViewPagerAdapter(views, photoBeanArrayList);
+            PhotoViewPagerAdapter photoViewPagerAdapter = new PhotoViewPagerAdapter(photoBeanArrayList);
             viewPager.removeAllViews();
             viewPager.setAdapter(photoViewPagerAdapter);
-            photoViewPagerAdapter.loadImg(this);
         });
     }
 

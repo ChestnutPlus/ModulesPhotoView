@@ -1,39 +1,32 @@
 package com.chestnut.photoView.view.pager;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.support.v4.view.PagerAdapter;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.chestnut.common.manager.imgloader.ImgLoaderConfig;
-import com.chestnut.common.manager.imgloader.ImgLoaderManager;
-import com.chestnut.common.manager.imgloader.contract.ImgLoaderListener;
+import com.bumptech.glide.Glide;
 import com.chestnut.photoView.R;
 import com.chestnut.photoView.bean.PhotoBean;
 import com.chestnut.photoView.view.core.PhotoView;
 import com.chestnut.photoView.view.progress.CBProgressBar;
 
+import java.util.LinkedList;
 import java.util.List;
-
-
-/**
- * Created by Chestnut on 2017/3/8.
- */
 
 public class PhotoViewPagerAdapter extends PagerAdapter {
 
-    private List<View> mListViews;
     private List<PhotoBean> mListPhotoBeans;
+    private LinkedList<View> mCaches = new LinkedList<>();
 
-    public PhotoViewPagerAdapter(List<View> mListViews, List<PhotoBean> mListPhotoBeans) {
-        this.mListViews = mListViews;
+    public PhotoViewPagerAdapter(List<PhotoBean> mListPhotoBeans) {
         this.mListPhotoBeans = mListPhotoBeans;
     }
 
     @Override
     public int getCount() {
-        return mListViews.size();
+        return mListPhotoBeans.size();
     }
 
     @Override
@@ -43,44 +36,42 @@ public class PhotoViewPagerAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView(mListViews.get(position));
+        if(mCaches.size() > 0){
+            mCaches.clear();
+        }
+        container.removeView((View)object);
+        mCaches.add((View)object);
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        container.addView(mListViews.get(position),0);
-        return mListViews.get(position);
+        View convertView;
+        ViewHolder mHolder;
+        if(mCaches.size() == 0){
+            convertView = LayoutInflater.from(container.getContext()).inflate(R.layout.chestnut_photo_view_pager_photo_view,null);
+            mHolder = new ViewHolder();
+            mHolder.photoView = (PhotoView)convertView.findViewById(R.id.photoView);
+            mHolder.cbProgressBar = (CBProgressBar)convertView.findViewById(R.id.loading);
+            convertView.setTag(mHolder);
+        }else{
+            convertView = mCaches.removeFirst();
+            mHolder = (ViewHolder) convertView.getTag();
+        }
+        mHolder.fresh(container.getContext(), mListPhotoBeans.get(position));
+        container.addView(convertView);
+        return convertView;
     }
 
-    public void loadImg(final Context context) {
-        for (int i = 0; i < mListPhotoBeans.size(); i++) {
-            final int index = i;
-            PhotoView photoView = (PhotoView) mListViews.get(index).findViewById(R.id.photoView);
+    private class ViewHolder{
+        PhotoView photoView;
+        CBProgressBar cbProgressBar;
+        void fresh(Context context, PhotoBean photoBean) {
             photoView.enable();
-            ImgLoaderManager.getInstance().load(context, ImgLoaderConfig.builder()
-                    .from(mListPhotoBeans.get(i).url)
-                    .err(R.drawable.chestnut_photo_view_load_fail)
-                    .listen(new ImgLoaderListener() {
-                        @Override
-                        public void onReady(Drawable drawable) {
-                            mListViews.get(index).findViewById(R.id.loading).setVisibility(View.INVISIBLE);
-                        }
-
-                        @Override
-                        public void onErr() {
-                            mListViews.get(index).findViewById(R.id.loading).setVisibility(View.INVISIBLE);
-                        }
-
-                        @Override
-                        public void onProgress(int progress) {
-                            CBProgressBar cbProgressBar = (CBProgressBar) mListViews.get(index).findViewById(R.id.loading);
-                            cbProgressBar.setVisibility(View.VISIBLE);
-                            cbProgressBar.setMax(100);
-                            cbProgressBar.setProgress(progress);
-                        }
-                    })
-                    .to(photoView)
-                    .build());
+            Glide.with(context)
+                    .load(photoBean.url)
+                    .error(R.drawable.chestnut_photo_view_load_fail)
+                    .thumbnail(0.2f)
+                    .into(photoView);
         }
     }
 }

@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
                     .setPhotoBeanArrayList(testPhotoBeanArrayList)
                     .setPhotoBean(testPhotoBean)
                     .setPhotoBean(photoBean)
+                    .setPhotoBean(new PhotoBean("鬼刀","https://b-ssl.duitang.com/uploads/item/201608/30/20160830122907_iyLwx.jpeg"))
+                    .setPhotoBean(new PhotoBean("鬼刀2","https://i2.fuimg.com/510372/38c3e5eac4190188.jpg"))
                     .setEnableDownload(true)
                     .setTypeface(FontManager.getInstance().get(FONT_PATH_WA_WA))
                     .setPhotoViewerCallback(new PhotoViewer.Callback(){
