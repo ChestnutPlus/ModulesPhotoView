@@ -94,6 +94,7 @@ public class PhotoViewer {
         public Callback photoViewerCallback;
         public boolean enableDownload = false;
         public Typeface typeface = null;
+        public boolean defaultShowPermissionToastTips = false;
         private Context context;
 
         public PhotoViewer build(Context context) {
@@ -125,6 +126,11 @@ public class PhotoViewer {
             this.enableDownload = enableDownload;
             return this;
         }
+
+        public Builder setDefaultShowPermissionToastTips(boolean defaultShowPermissionToastTips) {
+            this.defaultShowPermissionToastTips = defaultShowPermissionToastTips;
+            return this;
+        }
     }
 
     /**
@@ -134,5 +140,6 @@ public class PhotoViewer {
         public void onSaveStart(String saveSuccessFilePath){}
         public void onSaveSuccess(String saveSuccessFilePath){}
         public void onSaveFail(String saveSuccessFilePath){}
+        public void onPermissionDenied(String permission){}
     }
 }

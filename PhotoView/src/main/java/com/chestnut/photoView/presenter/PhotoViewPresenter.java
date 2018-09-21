@@ -14,7 +14,6 @@ import com.chestnut.photoView.contract.PhotoViewContract;
 import com.chestnut.photoView.contract.PhotoViewer;
 
 import java.io.File;
-import java.util.ArrayList;
 
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
@@ -33,36 +32,33 @@ import io.reactivex.schedulers.Schedulers;
 public class PhotoViewPresenter implements PhotoViewContract.P{
 
     private PhotoViewContract.V v;
-    private ArrayList<PhotoBean> photoBeanArrayList;
-    private PhotoViewer.Callback photoViewerCallback;
+    private PhotoViewer.Builder builder;
     private int currentPosition = -1;
     private String TAG = "PhotoViewPresenter";
     private Context context;
 
     public PhotoViewPresenter(Context context, PhotoViewContract.V v) {
-        this.context = context;
+        this.context = context.getApplicationContext();
         this.v = v;
     }
 
     public void onCreate(Intent intent) {
         if (intent!=null && intent.getExtras()!=null) {
             long longKey = intent.getLongExtra(PhotoViewer.Key_Builder,-1);
-            PhotoViewer.Builder builder = PhotoViewer.getInstance().popAndClean(longKey);
+            builder = PhotoViewer.getInstance().popAndClean(longKey);
             //参数注入
             if (builder!=null) {
-                photoBeanArrayList = builder.photoBeanArrayList;
-                photoViewerCallback = builder.photoViewerCallback;
                 if (v!=null) {
                     v.showDownloadIcon(builder.enableDownload);
                     v.setTypeface(builder.typeface);
                 }
             }
-            if (photoBeanArrayList != null && photoBeanArrayList.size() > 0) {
+            if (builder!=null && builder.photoBeanArrayList != null && builder.photoBeanArrayList.size() > 0) {
                 if (v != null) {
-                    v.refreshViewPager(photoBeanArrayList);
-                    v.setTvTitle(photoBeanArrayList.get(0).title);
+                    v.refreshViewPager(builder.photoBeanArrayList);
+                    v.setTvTitle(builder.photoBeanArrayList.get(0).title);
                     currentPosition = 1;
-                    v.setPagerIndex(currentPosition, photoBeanArrayList.size());
+                    v.setPagerIndex(currentPosition, builder.photoBeanArrayList.size());
                 }
             }
             else {
@@ -79,16 +75,16 @@ public class PhotoViewPresenter implements PhotoViewContract.P{
     @Override
     public void onPageSelected(int position) {
         currentPosition = position;
-        if (v!=null && photoBeanArrayList!=null) {
-            v.setPagerIndex(currentPosition + 1, photoBeanArrayList.size());
-            v.setTvTitle(photoBeanArrayList.get(currentPosition).title);
+        if (v!=null && builder!=null && builder.photoBeanArrayList!=null) {
+            v.setPagerIndex(currentPosition + 1, builder.photoBeanArrayList.size());
+            v.setTvTitle(builder.photoBeanArrayList.get(currentPosition).title);
         }
     }
 
     @Override
     public void saveCurrentPhoto() {
-        if (photoBeanArrayList!=null && currentPosition>0 && currentPosition<photoBeanArrayList.size()) {
-            final PhotoBean p = photoBeanArrayList.get(currentPosition);
+        if (builder!=null && builder.photoBeanArrayList!=null && currentPosition>0 && currentPosition<builder.photoBeanArrayList.size()) {
+            final PhotoBean p = builder.photoBeanArrayList.get(currentPosition);
             String[] saveFilePath = new String[1];
             Observable.just(p)
                     //取文件名
@@ -120,17 +116,17 @@ public class PhotoViewPresenter implements PhotoViewContract.P{
                     })
                     //保存
                     .flatMap(s -> {
-                        if (photoViewerCallback!=null)
-                            photoViewerCallback.onSaveStart(s);
+                        if (builder!=null && builder.photoViewerCallback!=null)
+                            builder.photoViewerCallback.onSaveStart(s);
                         return SimpleDownloadUtils.downLoadRx(p.url, s);
                     })
                     .subscribe(aBoolean -> {}, throwable -> {
                         LogUtils.i(TAG, "err, "+throwable.getMessage());
-                        if (photoViewerCallback!=null)
-                            photoViewerCallback.onSaveFail(saveFilePath[0]);
+                        if (builder!=null && builder.photoViewerCallback!=null)
+                            builder.photoViewerCallback.onSaveFail(saveFilePath[0]);
                     }, ()->{
-                        if (photoViewerCallback!=null)
-                            photoViewerCallback.onSaveSuccess(saveFilePath[0]);
+                        if (builder!=null && builder.photoViewerCallback!=null)
+                            builder.photoViewerCallback.onSaveSuccess(saveFilePath[0]);
                         //通知系统插入图片
                         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                         File f = new File(saveFilePath[0]);
@@ -142,7 +138,18 @@ public class PhotoViewPresenter implements PhotoViewContract.P{
     }
 
     @Override
+    public void onPermissionDenied(String permission) {
+        if (builder!=null && builder.photoViewerCallback!=null)
+            builder.photoViewerCallback.onPermissionDenied(permission);
+    }
+
+    @Override
     public void onDestroy() {
         v = null;
+    }
+
+    @Override
+    public boolean isDefaultShowPermissionToastTips() {
+        return builder!=null && builder.defaultShowPermissionToastTips;
     }
 }

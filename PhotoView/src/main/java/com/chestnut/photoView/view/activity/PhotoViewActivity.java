@@ -1,15 +1,19 @@
 package com.chestnut.photoView.view.activity;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chestnut.photoView.R;
 import com.chestnut.photoView.bean.PhotoBean;
@@ -21,29 +25,44 @@ import java.util.ArrayList;
 
 public class PhotoViewActivity extends AppCompatActivity implements View.OnClickListener,PhotoViewContract.V,ViewPager.OnPageChangeListener {
 
-    private PhotoViewPresenter photoViewPresenter = new PhotoViewPresenter(this,this);
+    private PhotoViewPresenter photoViewPresenter;
     private TextView tvPagerIndex,tvTitle;
     private ViewPager viewPager;
     private ImageView imgDownload;
 
+    private final int requestWritePermissionCode = 0x111;
+    private final int requestReadPermissionCode = 0x112;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //hide status bar
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         //init view
         setContentView(R.layout.chestnut_photo_view_activity_photo_view);
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         tvPagerIndex = (TextView) findViewById(R.id.tv_pager_index);
         tvTitle = (TextView) findViewById(R.id.tv_title);
         imgDownload = (ImageView) findViewById(R.id.img_download);
-        //init presenter
-        photoViewPresenter.onCreate(getIntent());
         //set listener
         findViewById(R.id.img_back).setOnClickListener(this);
         viewPager.addOnPageChangeListener(this);
         imgDownload.setOnClickListener(this);
+        photoViewPresenter = new PhotoViewPresenter(this,this);
+        //6.0权限检测，需要用到读取权限
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            switch (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                case PackageManager.PERMISSION_GRANTED:
+                    //init presenter
+                    photoViewPresenter.onCreate(getIntent());
+                    break;
+                default:
+                    ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, requestReadPermissionCode);
+                    break;
+            }
+        }
+        else {
+            //init presenter
+            photoViewPresenter.onCreate(getIntent());
+        }
     }
 
     @Override
@@ -65,7 +84,51 @@ public class PhotoViewActivity extends AppCompatActivity implements View.OnClick
             finish();
         }
         else if (i == R.id.img_download) {
-            photoViewPresenter.saveCurrentPhoto();
+            //6.0权限检测，需要用到存储权限
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                switch (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    case PackageManager.PERMISSION_GRANTED:
+                        photoViewPresenter.saveCurrentPhoto();
+                        break;
+                    default:
+                        ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, requestWritePermissionCode);
+                        break;
+                }
+            }
+            else {
+                photoViewPresenter.saveCurrentPhoto();
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case requestWritePermissionCode:
+                if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //授权成功
+                    photoViewPresenter.saveCurrentPhoto();
+                } else {
+                    //授权失败提示
+                    if (photoViewPresenter.isDefaultShowPermissionToastTips())
+                        Toast.makeText(this,"no permission 0x01",Toast.LENGTH_SHORT).show();
+                    photoViewPresenter.onPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                }
+                break;
+            case requestReadPermissionCode:
+                if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //授权成功
+                    //init presenter
+                    photoViewPresenter.onCreate(getIntent());
+                }
+                else {
+                    //授权失败提示
+                    if (photoViewPresenter.isDefaultShowPermissionToastTips())
+                        Toast.makeText(this,"no permission 0x02",Toast.LENGTH_SHORT).show();
+                    photoViewPresenter.onPermissionDenied(Manifest.permission.READ_EXTERNAL_STORAGE);
+                }
+                break;
         }
     }
 

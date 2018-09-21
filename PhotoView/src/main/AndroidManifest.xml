@@ -7,7 +7,7 @@
 
     <application>
         <activity
-            android:theme="@style/chestnut_photo_view_PhotoLoaderAppTheme"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:name="com.chestnut.photoView.view.activity.PhotoViewActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
     </application>

@@ -23,7 +23,9 @@ public interface PhotoViewContract {
         void onCreate(Intent intent);
         void onPageSelected(int position);
         void saveCurrentPhoto();
+        void onPermissionDenied(String permission);
         void onDestroy();
+        boolean isDefaultShowPermissionToastTips();
     }
     interface V {
         void setPagerIndex(int now, int total);
