@@ -1,12 +1,12 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 26
     buildToolsVersion "26.0.2"
 
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 3
         versionName "1.0.4"
         /**
@@ -41,9 +41,11 @@ android {
 }
 
 dependencies {
-    api 'com.android.support:appcompat-v7:25.4.0'
+    api 'com.android.support:appcompat-v7:26.1.0'
     //图片浏览库：
     //  https://github.com/bm-x/PhotoView
 //    implementation 'com.bm.photoview:library:1.4.1'
-    api 'com.github.ChestnutPlus:ModulesCommon:2.2.0'
+    api ('com.github.ChestnutPlus:ModulesCommon:2.2.0') {
+        exclude group:'com.android.support', module:'recyclerview-v7'
+    }
 }
