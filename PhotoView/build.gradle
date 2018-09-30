@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven'
 
 android {
     compileSdkVersion 26
@@ -47,5 +48,34 @@ dependencies {
 //    implementation 'com.bm.photoview:library:1.4.1'
     api ('com.github.ChestnutPlus:ModulesCommon:2.2.0') {
         exclude group:'com.android.support', module:'recyclerview-v7'
+    }
+}
+
+uploadArchives {
+    repositories.mavenDeployer {
+        /**
+         * 1.0.0
+         *      2018-09-20 10:04:35
+         *          1. 第一版
+         */
+        pom.version = "1.0.0"
+        pom.artifactId = "m-photo-view"
+        pom.groupId = "com.chestnut.photoView"
+        pom.name = "m-photo-view"
+        pom.packaging = 'aar'
+        // 读取配置
+        File configFile = file('E:\\GitOsChina\\Linux\\Nexus\\config.txt')
+        if (configFile.exists()) {
+            def properties = new Properties()
+            properties.load(configFile.newDataInputStream())
+            def ip = properties.getProperty('ip')
+            def port = properties.getProperty('port')
+            def userName = properties.getProperty('userName')
+            def password = properties.getProperty('password')
+            // 修改为自己刚才创建的仓库地址
+            repository(url: "http://$ip:$port/nexus/content/repositories/$pom.groupId/") {
+                authentication(userName: userName, password: password)
+            }
+        }
     }
 }
